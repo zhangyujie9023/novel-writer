@@ -1,7 +1,7 @@
 {
   "name": "novel-writer",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,10 +9,17 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "serve dist -l 3000",
-    "deploy": "npm run build && npm run start"
+    "deploy": "npm run build && npm run start",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "dependencies": {
     "@ant-design/icons": "^6.2.2",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2",
+    "@tauri-apps/plugin-fs": "^2",
+    "@tauri-apps/plugin-updater": "^2",
     "antd": "^6.3.7",
     "epubjs": "^0.3.93",
     "mammoth": "^1.12.0",

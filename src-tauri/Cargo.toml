@@ -1,10 +1,10 @@
 [package]
 name = "novel-writer"
-version = "0.1.0"
-description = "AI小说写作工作台"
-authors = ["you"]
-license = ""
-repository = ""
+version = "1.0.0"
+description = "AI小说写作工作台 - 长篇小说AI写作工具"
+authors = ["zhangyujie9023"]
+license = "MIT"
+repository = "https://github.com/zhangyujie9023/novel-writer"
 edition = "2021"
 rust-version = "1.77.2"
 
@@ -23,3 +23,4 @@ tauri = { version = "2", features = ["tray-icon"] }
 tauri-plugin-log = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
+tauri-plugin-updater = "2"

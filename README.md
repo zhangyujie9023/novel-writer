@@ -1,179 +1,153 @@
-# AI小说写作工作台 - 本地部署指南
+# Novel-Writer
 
-## 系统要求
+> AI 驱动的长篇小说写作工作台 | AI-Powered Novel Writing Studio
 
-- Node.js 18+ (推荐 v22+)
-- npm 9+
-- 约 500MB 磁盘空间
+<p align="center">
+  <img src="src/assets/hero.png" alt="Novel-Writer" width="600">
+</p>
 
-## 快速启动
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+  <img src="https://img.shields.io/badge/React-19-61DAFB" alt="React">
+  <img src="https://img.shields.io/badge/Tauri-2-24C8D8" alt="Tauri">
+  <img src="https://img.shields.io/badge/Ant_Design-6-0170FE" alt="Ant Design">
+  <img src="https://img.shields.io/badge/platform-Windows-lightgrey" alt="Platform">
+</p>
 
-### 方式一：开发模式（推荐开发调试）
+## 功能特性
+
+### 📚 项目管理
+- 创建、编辑、删除小说项目
+- 多章节管理，实时字数统计
+- 数据本地存储，隐私安全
+
+### 🤖 AI 写作助手
+- 支持 Ollama 本地模型（推荐 qwen2.5:14b）
+- 支持 OpenAI / DeepSeek / 自定义 API
+- 续写、改写、扩写、润色
+- 大纲自动生成
+
+### 📖 拆书分析
+- 导入 TXT / PDF / EPUB / DOCX
+- 全面分析、大纲提取、人物档案
+- 写作风格、世界观、写作技巧分析
+
+### ✨ 更多功能
+- 🎨 深色/浅色主题切换
+- 🔍 全文搜索
+- 📝 人名生成器
+- 🛡️ 敏感词检测
+- 📋 写作模板（玄幻、都市、科幻等）
+- ⌨️ 撤销/重做
+- 💾 自动保存
+
+## 快速开始
+
+### 下载安装
+
+前往 [Releases](https://github.com/zhangyujie9023/novel-writer/releases) 下载最新版 Windows 安装包。
+
+### 从源码构建
+
+**系统要求：**
+- Node.js 18+（推荐 v22+）
+- Rust 1.77+
+- Windows 10/11
+
 ```bash
+# 克隆仓库
+git clone https://github.com/zhangyujie9023/novel-writer.git
 cd novel-writer
-npm install          # 首次运行需要安装依赖
-npm run dev          # 启动开发服务器，访问 http://localhost:5173
+
+# 安装前端依赖
+npm install
+
+# 开发模式
+npm run tauri:dev
+
+# 构建生产版本
+npm run tauri:build
 ```
 
-### 方式二：生产模式（推荐日常使用）
+### 纯前端模式（无需 Rust）
+
 ```bash
-cd novel-writer
-npm install          # 首次运行需要安装依赖
-npm run build        # 构建生产版本
-npm run start        # 启动静态服务器，访问 http://localhost:3000
+npm install
+npm run dev      # 开发模式 http://localhost:5173
+npm run build    # 构建
+npm run start    # 生产模式 http://localhost:3000
 ```
-
-### 方式三：一键部署
-```bash
-cd novel-writer
-npm run deploy       # 自动构建并启动
-```
-
-## 功能列表
-
-### ✅ 已实现功能
-
-| 功能 | 状态 | 说明 |
-|------|------|------|
-| 📚 项目管理 | ✅ | 创建、编辑、删除小说项目 |
-| 📝 章节编辑 | ✅ | 多章节管理，实时字数统计 |
-| 🤖 AI 写作 | ✅ | 续写、改写、扩写、润色 |
-| 📋 大纲生成 | ✅ | 根据简介自动生成大纲 |
-| 👥 人物管理 | ✅ | 人物档案管理 |
-| 📖 拆书分析 | ✅ | 导入书籍分析学习 |
-| 📥 多格式导入 | ✅ | TXT/PDF/EPUB/DOCX |
-| 💾 本地存储 | ✅ | 数据保存在浏览器 localStorage |
-| 📤 导出 | ✅ | 导出为 Markdown 文件 |
-
-### 🔄 拆书分析功能
-
-支持的导入格式：
-- **TXT** - 纯文本文件
-- **PDF** - PDF 文档（逐页提取）
-- **EPUB** - 电子书格式
-- **DOCX** - Word 文档
-
-分析模式：
-1. 📚 全面分析 - 大纲+人物+情节+技巧
-2. 📋 故事大纲 - 梳理故事结构
-3. 👥 人物档案 - 提取人物设定
-4. ✨ 写作风格 - 分析叙事技巧
-5. 🌍 世界观设定 - 提取世界观元素
-6. 🎯 写作技巧 - 学习可复用的技巧
 
 ## AI 配置
 
-### 本地 Ollama（推荐）
+### Ollama（推荐 - 完全离线）
+
 ```bash
-# 安装 Ollama
-# 访问 https://ollama.ai 下载安装
-
-# 下载推荐模型
+# 安装 Ollama: https://ollama.ai
 ollama pull qwen2.5:14b
-
-# 启动服务（默认端口 11434）
 ollama serve
 ```
 
-应用内配置：
+应用内设置：
 - Provider: Ollama
-- URL: http://localhost:11434
-- Model: qwen2.5:14b
+- URL: `http://localhost:11434`
+- Model: `qwen2.5:14b`
 
 ### 云端 API
 
-支持以下云端服务：
-- OpenAI (GPT-4o)
-- DeepSeek
-- 自定义 OpenAI 兼容 API
+支持 OpenAI (GPT-4o)、DeepSeek、或任何 OpenAI 兼容 API。
 
-## 数据存储
+## 技术栈
 
-所有数据存储在浏览器 localStorage 中：
-- 键名：`novel-writer-data`
-- 包含：项目列表、章节内容、AI 配置、拆书历史
+| 层级 | 技术 |
+|------|------|
+| 桌面框架 | Tauri 2 |
+| 前端框架 | React 19 |
+| UI 组件 | Ant Design 6 |
+| 状态管理 | Zustand 5 |
+| 构建工具 | Vite 8 |
+| PDF 解析 | pdfjs-dist |
+| EPUB 解析 | epub.js |
+| DOCX 解析 | mammoth |
 
-### 数据备份
-打开浏览器开发者工具：
-```javascript
-// 导出数据
-console.log(localStorage.getItem('novel-writer-data'))
-
-// 导入数据
-localStorage.setItem('novel-writer-data', '你的备份数据')
-```
-
-## 目录结构
+## 项目结构
 
 ```
 novel-writer/
-├── dist/                    # 生产构建输出
-├── public/                  # 静态资源
-├── src/
+├── src/                     # 前端源码
 │   ├── components/          # React 组件
 │   │   ├── AIPanel.jsx      # AI 写作面板
 │   │   ├── BookAnalyzer.jsx # 拆书分析
 │   │   ├── ChapterEditor.jsx# 章节编辑器
-│   │   └── Sidebar.jsx      # 左侧边栏
-│   ├── pages/
-│   │   ├── EditorPage.jsx   # 编辑器页面
-│   │   └── ProjectList.jsx  # 项目列表页
-│   ├── stores/
-│   │   └── useStore.js      # Zustand 状态管理
-│   ├── utils/
-│   │   └── ai.js            # AI API 封装
-│   ├── App.jsx              # 主应用
-│   ├── App.css              # 样式
-│   └── main.jsx             # 入口
-├── index.html
-├── package.json
-└── vite.config.js
+│   │   ├── Sidebar.jsx      # 侧边栏
+│   │   ├── SearchPanel.jsx  # 搜索
+│   │   ├── NameGenerator.jsx# 人名生成
+│   │   ├── TemplatePanel.jsx# 模板
+│   │   └── ...
+│   ├── pages/               # 页面
+│   ├── stores/              # Zustand 状态
+│   ├── utils/               # 工具函数
+│   └── data/                # 静态数据
+├── src-tauri/               # Tauri (Rust) 后端
+│   ├── src/                 # Rust 源码
+│   ├── Cargo.toml           # Rust 依赖
+│   └── tauri.conf.json      # Tauri 配置
+├── .github/workflows/       # CI/CD
+│   └── release.yml          # 自动构建发布
+└── package.json
 ```
 
-## 端口说明
+## 自动更新
 
-| 模式 | 默认端口 | 说明 |
-|------|----------|------|
-| npm run dev | 5173 | Vite 开发服务器 |
-| npm run preview | 4173 | Vite 预览服务器 |
-| npm run start | 3000 | 静态文件服务器 |
-
-## 常见问题
-
-### Q: 端口被占用怎么办？
-A: 依次尝试其他端口：
-- dev: 5173 → 5174 → 5175...
-- preview: 4173 → 4174 → 4175...
-- start: 3000 → 3001 → 3002...
-
-### Q: PDF/EPUB 导入失败？
-A: 
-1. 确保文件不是加密的
-2. 尝试较小的文件先测试
-3. 检查浏览器控制台错误信息
-
-### Q: AI 调用失败？
-A:
-1. 检查 Ollama 是否运行：`ollama list`
-2. 检查模型是否下载：`ollama pull qwen2.5:14b`
-3. 检查端口是否正确（默认 11434）
-
-### Q: 数据丢失了？
-A: 
-- localStorage 数据在清除浏览器数据时会丢失
-- 建议定期导出项目备份
-
-## 技术栈
-
-- **前端框架**: React 19
-- **构建工具**: Vite 8
-- **UI 组件**: Ant Design 6
-- **状态管理**: Zustand 5
-- **Markdown**: react-markdown
-- **PDF 解析**: pdfjs-dist
-- **EPUB 解析**: epubjs
-- **DOCX 解析**: mammoth
+应用内置 Tauri Updater，发布新版本后会自动提示更新。
 
 ## 许可证
 
-MIT
+[MIT](LICENSE)
+
+---
+
+<p align="center">
+  Built with ❤️ by <a href="https://github.com/zhangyujie9023">zhangyujie9023</a>
+</p>
