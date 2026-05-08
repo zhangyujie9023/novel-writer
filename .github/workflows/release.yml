@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -21,8 +22,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install Rust stable
-        uses: dtolnay/rust-action/setup@v1
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
