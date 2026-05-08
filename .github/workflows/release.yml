@@ -1,57 +1,57 @@
 name: Build and Release
 
 on:
- push:
- tags:
- - 'v*'
- workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
 
 permissions:
- contents: write
+  contents: write
 
 jobs:
- build:
- runs-on: windows-latest
+  build:
+    runs-on: windows-latest
 
- steps:
- - name: Checkout
- uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
- - name: Setup Node.js
- uses: actions/setup-node@v4
- with:
- node-version: 22
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
- - name: Setup Rust
- uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
 
- - name: Rust cache
- uses: swatinem/rust-cache@v2
- with:
- workspaces: src-tauri -> target
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
 
- - name: Install frontend dependencies
- run: npm install
+      - name: Install frontend dependencies
+        run: npm install
 
- - name: Create .tauri dir
- run: |
- New-Item -ItemType Directory -Path .tauri -Force
+      - name: Create .tauri dir
+        run: |
+          New-Item -ItemType Directory -Path .tauri -Force
 
- - name: Decode signing key
- env:
- TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
- run: |
- $key = $env:TAURI_SIGNING_PRIVATE_KEY
- $keyBytes = [System.Convert]::FromBase64String($key)
- [System.IO.File]::WriteAllBytes(".tauri/novel-writer.key", $keyBytes)
+      - name: Decode signing key
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: |
+          $key = $env:TAURI_SIGNING_PRIVATE_KEY
+          $keyBytes = [System.Convert]::FromBase64String($key)
+          [System.IO.File]::WriteAllBytes(".tauri/novel-writer.key", $keyBytes)
 
- - name: Build the app
- uses: tauri-apps/tauri-action@v0
- env:
- GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
- with:
- tagName: ${{ github.ref_name }}
- releaseName: 'Novel-Writer ${{ github.ref_name }}'
- releaseBody: 'See the assets to download this version and install.'
- releaseDraft: true
- prerelease: false
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Novel-Writer ${{ github.ref_name }}'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false
