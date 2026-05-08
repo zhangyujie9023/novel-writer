@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", -apple-system, sans-serif;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* AI 面板消息中的代码块 */
+pre {
+  background: #f6f8fa;
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+code {
+  font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+  font-size: 13px;
+}
+
+/* 章节编辑器特殊样式 */
+textarea.editor-textarea {
+  font-size: 16px;
+  line-height: 1.9;
+}
