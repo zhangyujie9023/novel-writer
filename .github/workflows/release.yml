@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -22,7 +21,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Setup Rust
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
       - name: Rust cache
@@ -33,25 +32,23 @@ jobs:
       - name: Install frontend dependencies
         run: npm install
 
-      - name: Create .tauri dir
-        run: |
-          New-Item -ItemType Directory -Path .tauri -Force
-
-      - name: Decode signing key
-        env:
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-        run: |
-          $key = $env:TAURI_SIGNING_PRIVATE_KEY
-          $keyBytes = [System.Convert]::FromBase64String($key)
-          [System.IO.File]::WriteAllBytes(".tauri/novel-writer.key", $keyBytes)
-
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'Novel-Writer ${{ github.ref_name }}'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
+          releaseBody: |
+            ## Novel-Writer v${{ github.ref_name }}
+
+            AI 小说写作工作台 - 长篇创作利器
+
+            ### 更新内容
+            请查看 CHANGELOG.md 获取详细更新日志
+
+            ### 安装说明
+            下载下方 `.exe` 安装包进行安装，支持自动更新
+          releaseDraft: false
           prerelease: false
