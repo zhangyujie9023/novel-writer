@@ -16,6 +16,7 @@ import SearchPanel from './components/SearchPanel'
 import ProjectList from './pages/ProjectList'
 import SettingsPage from './pages/SettingsPage'
 import useStore from './stores/useStore'
+import { check } from '@tauri-apps/plugin-updater'
 
 const { Header, Content, Sider } = Layout
 const { defaultAlgorithm, darkAlgorithm } = theme
@@ -76,6 +77,32 @@ function AppContent() {
     setTimeout(() => setIsLoaded(true), 100)
     return () => stopAutoSave()
   }, [])
+
+  // 检查应用更新（启动后延迟检查）
+  useEffect(() => {
+    if (!isLoaded) return
+    const lastChecked = localStorage.getItem('novel-writer-updater-last-checked')
+    const now = Date.now()
+    // 同一天内不重复检查
+    if (lastChecked && now - parseInt(lastChecked) < 24 * 60 * 60 * 1000) return
+    localStorage.setItem('novel-writer-updater-last-checked', String(now))
+
+    check()
+      .then(update => {
+        if (update?.available) {
+          message.info({
+            content: (
+              <span>
+                🚀 发现新版本 <strong>{update.version}</strong>！
+                请前往 <a href="https://github.com/zhangyujie9023/novel-writer/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a> 下载更新
+              </span>
+            ),
+            duration: 8,
+          })
+        }
+      })
+      .catch(() => { /* 检查失败，静默忽略 */ })
+  }, [isLoaded])
 
   // 加载前显示加载指示器
   if (!isLoaded) {
