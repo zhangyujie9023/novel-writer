@@ -52,3 +52,19 @@ jobs:
             下载下方 `.exe` 安装包进行安装，支持自动更新
           releaseDraft: false
           prerelease: false
+          # 显式包含 latest.json 作为发布资产（自动更新用）
+          assets: >-
+            [
+              "src-tauri/target/release/bundle/nsis/*.exe",
+              "src-tauri/target/release/bundle/nsis/latest.json"
+            ]
+
+      - name: Upload latest.json (backup)
+        if: always()
+        run: |
+          $json = Get-ChildItem -Path "src-tauri/target/release/bundle/nsis" -Filter "latest.json" -ErrorAction SilentlyContinue
+          if ($json) {
+            Write-Output "Found latest.json: $($json.FullName)"
+          } else {
+            Write-Output "latest.json not found in bundle directory"
+          }
